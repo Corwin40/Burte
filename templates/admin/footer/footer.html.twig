@@ -1,0 +1,31 @@
+{% set col = footers|length %}
+<section class="container-fluid">
+    <div class="row">
+        {% for footer in footers %}
+
+        {% else %}
+            <div class="col-3">
+                <p class="text-center">
+                    <img class="img-fluid" src="{{ vich_uploader_asset(parameter) }}" alt="logo_Structure" style="max-height: 50px;">
+                </p>
+            </div>
+            <div class="col-3 offset-6">
+                <h5 class="text-center">{{ parameter.nameSite }}</h5>
+                <p class="text-center">{{ parameter.descrSite }}</p>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="row" id="op-footer-bottom">
+        <div class="col"><p>&copy; {{ "now"|date("Y") }} {{ parameter.nameSite}} | Propulsé par Symfony 5.2 & bootstrap 5 - créé par <a href="https://www.openpixl.fr">OpenPixl</a></p></div>
+        <div class="col">
+            {% if app.request.get('_route') == 'op_admin_dashboard_index' %}
+                <p>Version : 2.0.3</p>
+            {% else %}
+                <p class="text-end"><a href="{{ path('op_webapp_page_slug', {'slug': 'mentions-legales'}) }}">Mentions légales</a> | <a href="{{ path('op_admin_security_login') }}">Se connecter</a></p>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+
+

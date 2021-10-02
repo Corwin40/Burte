@@ -17,18 +17,20 @@
     {% endblock %}
 </head>
 <body>
-<div class="wrapper">
-{% block header %}
-    {{ render(controller('App\\Controller\\Webapp\\PublicController::BlocMenu')) }}
-{% endblock %}
+    <header>
+        {% block header %}
+            {{ render(controller('App\\Controller\\Webapp\\PublicController::BlocMenu')) }}
+        {% endblock %}
+    </header>
+
     <main id="content">
         {% block content %}
         {% endblock %}
     </main>
-    {% block footer %}
-        {{ include('include/footer_webapp.html.twig') }}
-    {% endblock %}
-</div>
-
+    <footer>
+        {% block footer %}
+            {{ render(controller('App\\Controller\\Admin\\FooterController::footers')) }}
+        {% endblock %}
+    </footer>
 </body>
 </html>

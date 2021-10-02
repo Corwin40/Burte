@@ -10,9 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/gestapp/product/category")
- */
+
 class ProductCategoryController extends AbstractController
 {
     /**
@@ -30,22 +28,48 @@ class ProductCategoryController extends AbstractController
      */
     public function new(Request $request): Response
     {
-        $productCategory = new ProductCategory();
-        $form = $this->createForm(ProductCategoryType::class, $productCategory);
-        $form->handleRequest($request);
+        $data = json_decode($request->getContent(), true);
+        if(!$data){
+            $productCategory = new ProductCategory();
+            $form = $this->createForm(ProductCategoryType::class, $productCategory);
+            $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+            if ($form->isSubmitted() && $form->isValid()) {
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($productCategory);
+                $entityManager->flush();
+
+                $category = $productCategory->getName();
+
+                return $this->json([
+                    'code'=> 200,
+                    'category' => $category,
+                    'message' => "Une catégorie a été ajoutée."
+                ], 200);
+            }
+
+            return $this->render('gest_app/product_category/new.html.twig', [
+                'product_category' => $productCategory,
+                'form' => $form->createView(),
+            ]);
+        }
+        else {
+            $name = $data['name'];
+            $productCategory = new ProductCategory();
+            $productCategory->setName($data['name']);
+            $productCategory->setNature($data['nature']);
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($productCategory);
             $entityManager->flush();
 
-            return $this->redirectToRoute('gest_app_product_category_index');
-        }
+            $category = $productCategory->getName();
 
-        return $this->render('gest_app/product_category/new.html.twig', [
-            'product_category' => $productCategory,
-            'form' => $form->createView(),
-        ]);
+            return $this->json([
+                'code' => 200,
+                'category' => $category,
+                'message' => "Une catégorie a été ajoutée."
+            ], 200);
+        }
     }
 
     /**

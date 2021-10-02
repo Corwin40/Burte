@@ -3,6 +3,7 @@
 namespace App\Entity\GestApp;
 
 use App\Repository\GestApp\ProductCategoryRepository;
+use Cocur\Slugify\Slugify;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -44,6 +45,24 @@ class ProductCategory
      * @ORM\OneToMany(targetEntity=Product::class, mappedBy="category")
      */
     private $products;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $nature;
+
+    /**
+     * Permet d'initialiser le slug !
+     * Utilisation de slugify pour transformer une chaine de caractères en slug
+     * @ORM\PrePersist
+     * @ORM\PreUpdate
+     */
+    public function initializeSlug() {
+        if(empty($this->slug)) {
+            $slugify = new Slugify();
+            $this->slug = $slugify->slugify($this->name);
+        }
+    }
 
     public function __construct()
     {
@@ -134,6 +153,18 @@ class ProductCategory
                 $product->setCategory(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getNature(): ?string
+    {
+        return $this->nature;
+    }
+
+    public function setNature(string $nature): self
+    {
+        $this->nature = $nature;
 
         return $this;
     }

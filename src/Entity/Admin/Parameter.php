@@ -147,6 +147,11 @@ class Parameter
      */
     private $urlLinkedin;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $numberColFooter;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -435,6 +440,18 @@ class Parameter
     public function setUrlLinkedin(string $urlLinkedin): self
     {
         $this->urlLinkedin = $urlLinkedin;
+
+        return $this;
+    }
+
+    public function getNumberColFooter(): ?int
+    {
+        return $this->numberColFooter;
+    }
+
+    public function setNumberColFooter(?int $numberColFooter): self
+    {
+        $this->numberColFooter = $numberColFooter;
 
         return $this;
     }

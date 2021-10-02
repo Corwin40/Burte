@@ -4,6 +4,7 @@ namespace App\Form\GestApp;
 
 use App\Entity\GestApp\Product;
 use App\Entity\GestApp\ProductCategory;
+use App\Repository\GestApp\ProductCategoryRepository;
 use Doctrine\ORM\EntityRepository;
 use Proxies\__CG__\App\Entity\Admin\member;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -38,10 +39,11 @@ class ProductType extends AbstractType
                 ],
             ])
             ->add('category', EntityType::class, [
+                'placeholder' => 'Choisir une categorie de produit',
                 'class' => ProductCategory::class,
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('c')
-                        ->orderBy('c.name', 'ASC');
+                'disabled' => true,
+                'query_builder' => function (ProductCategoryRepository $er) {
+                    return $er->createQueryBuilder('c')->orderBy('c.name', 'ASC');
                 },
                 'choice_label' => 'name',
             ])

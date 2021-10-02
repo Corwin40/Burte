@@ -29,9 +29,7 @@
         <div class="row">
             <div class="col-12">
                 <p>{{ section.description|raw }}</p>
-                <p class="text-center">
-                    <img src="{{asset('images/svg/Fleches.svg')}}" alt="">
-                </p>
+                {# Espace de démarcation à cet endroit #}
             </div>
         </div>
         {% endif %}
@@ -63,6 +61,8 @@
                     {{ render(controller('App\\Controller\\GestApp\\AvisController::view')) }}
                 {% elseif section.contentType == 'CountUp'%}
                     {{ render(controller('App\\Controller\\Admin\\StatistiqueController::CountUp')) }}
+                {% elseif section.contentType == 'All_products'%}
+                    {{ render(controller('App\\Controller\\GestApp\\ProductController::ListAllProductDispo')) }}
                 {% else %}
                 {% endif %}
             </div>
